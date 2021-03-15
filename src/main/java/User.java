@@ -38,33 +38,6 @@ public class User {
     @SerializedName(value = "data")
     private Map<String, String> data;
 
-    public static void main(String[] args) {
-        final int userId = 1234567890;
-        User user = new User();
-        user.setUserName("rotemfo");
-        final LocalDateTime dob = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
-        user.setDateOfBirth(dob);
-        user.setData(new HashMap<>() {{
-            put("user_id", Integer.toString(userId));
-        }});
-        assert (user.getUserId() == 0);
-        String userJson = GsonUtils.toJson(user);
-        log.info(userJson);
-        User generatedUser = GsonUtils.fromJson(userJson, User.class);
-        log.info("{}", generatedUser);
-        assert (generatedUser.getUserId() == userId);
-        // ---------------------------------------------------------------
-        String manualJson = "{\"a\":1, \"user_name\":\"rotemfo\",\"date_of_birth\":\"2021-03-14T10:27:49\",\"data\":\"user_id\\u003d1234567890,account_credit\\u003d0.3b,is_employee\\u003dtrue,user_name\\u003dyoni\"}";
-        generatedUser = GsonUtils.fromJson(manualJson, User.class);
-        log.info("{}", generatedUser);
-        assert (generatedUser.getUserId() == userId);
-        generatedUser.setUserName(null);
-        String generatedJson = GsonUtils.toJson(generatedUser);
-        User yoni = GsonUtils.fromJson(generatedJson, User.class);
-        log.info("{}", yoni);
-        assert (yoni.getUserName().equals("yoni"));
-    }
-
     public void setFromData(List<String> keys) {
         keys.forEach(key -> {
             try {
@@ -95,5 +68,32 @@ public class User {
                 log.error("and error occurred parsing {}", this);
             }
         });
+    }
+
+    public static void main(String[] args) {
+        final int userId = 1234567890;
+        User user = new User();
+        user.setUserName("rotemfo");
+        final LocalDateTime dob = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+        user.setDateOfBirth(dob);
+        user.setData(new HashMap<>() {{
+            put("user_id", Integer.toString(userId));
+        }});
+        assert (user.getUserId() == 0);
+        String userJson = GsonUtils.toJson(user);
+        log.info(userJson);
+        User generatedUser = GsonUtils.fromJson(userJson, User.class);
+        log.info("{}", generatedUser);
+        assert (generatedUser.getUserId() == userId);
+        // ---------------------------------------------------------------
+        String manualJson = "{\"a\":1, \"user_name\":\"rotemfo\",\"date_of_birth\":\"2021-03-14T10:27:49\",\"data\":\"user_id\\u003d1234567890,account_credit\\u003d0.3b,is_employee\\u003dtrue,user_name\\u003dyoni\"}";
+        generatedUser = GsonUtils.fromJson(manualJson, User.class);
+        log.info("{}", generatedUser);
+        assert (generatedUser.getUserId() == userId);
+        generatedUser.setUserName(null);
+        String generatedJson = GsonUtils.toJson(generatedUser);
+        User yoni = GsonUtils.fromJson(generatedJson, User.class);
+        log.info("{}", yoni);
+        assert (yoni.getUserName().equals("yoni"));
     }
 }
